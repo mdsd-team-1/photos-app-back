@@ -1,4 +1,4 @@
-package co.edu.unal.photosappback;
+package co.edu.unal.photosappback.model;
 
 import javax.persistence.*;
 

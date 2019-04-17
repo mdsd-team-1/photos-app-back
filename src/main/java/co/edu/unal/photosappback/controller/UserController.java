@@ -1,9 +1,10 @@
-package co.edu.unal.photosappback;
+package co.edu.unal.photosappback.controller;
 
+import co.edu.unal.photosappback.model.User;
+import co.edu.unal.photosappback.repository.UserRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
