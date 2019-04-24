@@ -11,18 +11,16 @@ public class User {
     private String firstName;
     private String lastName;
     private String profileDescription;
-    private String pass;
+    private String password;
     private String email;
 
-    public User() {  }
-
-    public User(String userName, String firstName, String lastName, String profileDescription, String pass, String email) {
-        this.setUserName(userName);
-        this.setFirstName(firstName);
-        this.setLastName(lastName);
-        this.setProfileDescription(profileDescription);
-        this.setPass(pass);
-        this.setEmail(email);
+    public User(String userName, String firstName, String lastName, String profileDescription, String password, String email) {
+        this.userName = userName;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.profileDescription = profileDescription;
+        this.password = password;
+        this.email = email;
     }
 
     @Id
@@ -58,7 +56,7 @@ public class User {
         this.lastName = lastName;
     }
 
-    @Column(name = "profile_description", nullable = false)
+    @Column(name = "profile_description", nullable = true)
     public String getProfileDescription() {
         return profileDescription;
     }
@@ -66,15 +64,15 @@ public class User {
         this.profileDescription = profileDescription;
     }
 
-    @Column(name = "pass", nullable = false)
-    public String getPass() {
-        return pass;
+    @Column(name = "password", nullable = false)
+    public String getPassword() {
+        return password;
     }
-    public void setPass(String pass) {
-        this.pass = pass;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = true)
     public String getEmail() {
         return email;
     }
@@ -86,11 +84,11 @@ public class User {
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", profileDescription='" + profileDescription + '\'' +
-                ", pass='" + pass + '\'' +
+                ", user_name='" + userName + '\'' +
+                ", first_name='" + firstName + '\'' +
+                ", last_name='" + lastName + '\'' +
+                ", profile_description='" + profileDescription + '\'' +
+                ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 '}';
     }
