@@ -24,9 +24,9 @@ public class AlbumController {
 
 
 	@RequestMapping(value = "/album/id/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getAlbum(@PathVariable Integer id) {
+	public ResponseEntity<?> getAlbum(@PathVariable Long id) {
 
-		Album album = albumRepository.getOne(id);
+		Album album = albumRepository.getOne(id.intValue());
 
 		if(album == null){
 			return new ResponseEntity<>("Album not found", HttpStatus.NOT_FOUND);
@@ -36,8 +36,8 @@ public class AlbumController {
 	}
 
 
-	@RequestMapping(value = "/album/id/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getPhotosFromAlbum(@PathVariable Integer id) {
+	@RequestMapping(value = "/album/{id}/photos", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<?> getPhotosFromAlbum(@PathVariable Long id) {
 
 		PhotoSpecification photosFromAlbumQuery = new PhotoSpecification(
 				new SearchCriteria("album_id", ":", id));
@@ -77,11 +77,11 @@ public class AlbumController {
 
 		Album newAlbum = albumRepository.save(
 				new Album(name, userId));
-		
+
 		if(newAlbum == null) {
 			return new ResponseEntity<>("Album not created", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
+
 		return new ResponseEntity<>(newAlbum, HttpStatus.ACCEPTED);
 	}
 }

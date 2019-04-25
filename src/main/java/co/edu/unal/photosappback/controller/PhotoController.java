@@ -17,9 +17,9 @@ public class PhotoController {
 
 
 	@RequestMapping(value = "/photo/id/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getPhoto(@PathVariable Integer id) {
+	public ResponseEntity<?> getPhoto(@PathVariable Long id) {
 
-		Photo photo = photoRepository.getOne(id);
+		Photo photo = photoRepository.getOne(id.intValue());
 
 		if(photo == null){
 			return new ResponseEntity<>("Photo not found", HttpStatus.NOT_FOUND);

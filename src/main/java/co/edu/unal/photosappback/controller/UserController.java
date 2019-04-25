@@ -24,9 +24,9 @@ public class UserController {
 
 
 	@RequestMapping(value = "/user/id/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getUser(@PathVariable Integer id) {
+	public ResponseEntity<?> getUser(@PathVariable Long id) {
 
-		User user = userRepository.getOne(id);
+		User user = userRepository.getOne(id.intValue());
 
 		if(user == null){
 			return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
@@ -37,7 +37,7 @@ public class UserController {
 
 
 	@RequestMapping(value = "/user/{id}/albums", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getAlbumsFromUser(@PathVariable Integer id) {
+	public ResponseEntity<?> getAlbumsFromUser(@PathVariable Long id) {
 
 		AlbumSpecification albumsFromUserQuery = new AlbumSpecification(
 				new SearchCriteria("user_id", ":", id));
@@ -68,7 +68,7 @@ public class UserController {
 
 		if(firstName == null || lastName == null || profileDescription == null ||
 				userName == null || password == null || email == null) {
-			
+
 			return new ResponseEntity<>("Missing parameters", HttpStatus.BAD_REQUEST);
 		}
 
