@@ -13,6 +13,8 @@ public class User {
     private String profileDescription;
     private String password;
     private String email;
+    
+    public User() {}
 
     public User(String userName, String firstName, String lastName, String profileDescription, String password, String email) {
         this.userName = userName;

@@ -11,6 +11,8 @@ public class Photo {
 	private String url;
 	private int albumId;
 	
+	public Photo() {}
+	
 	public Photo(String name, String url, int albumId) {
 		this.name = name;
 		this.url = url;
