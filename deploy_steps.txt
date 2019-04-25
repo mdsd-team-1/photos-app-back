@@ -1,0 +1,13 @@
+Photos Back
+
+Compilar el proyecto en mi computador para generar el Jar
+mvn package
+
+Correr el Jar en local
+java -jar target/photos-app-back-0.0.1-SNAPSHOT.jar
+
+Subir el Jar al server:
+scp target/photos-app-back-0.0.1-SNAPSHOT.jar photos.mdsd.com:/home/ubuntu/deploy
+
+Conectarse al server por SSH (ver el ssh config para el alias usado)
+ssh photos.mdsd.com
