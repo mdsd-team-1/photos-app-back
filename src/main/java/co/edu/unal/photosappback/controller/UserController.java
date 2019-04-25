@@ -35,6 +35,7 @@ public class UserController {
 		return new ResponseEntity<>(user, HttpStatus.OK);
 	}
 
+
 	@RequestMapping(value = "/user/{id}/albums", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getAlbumsFromUser(@PathVariable Integer id) {
 
@@ -54,6 +55,7 @@ public class UserController {
 		return new ResponseEntity<>(albums, HttpStatus.OK);
 	}
 
+
 	@PostMapping("/user/create")
 	public ResponseEntity<?> createUser(@RequestBody Map<String, String> body) {
 
@@ -66,6 +68,7 @@ public class UserController {
 
 		if(firstName == null || lastName == null || profileDescription == null ||
 				userName == null || password == null || email == null) {
+			
 			return new ResponseEntity<>("Missing parameters", HttpStatus.BAD_REQUEST);
 		}
 

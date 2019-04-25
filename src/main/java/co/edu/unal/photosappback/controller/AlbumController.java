@@ -35,6 +35,7 @@ public class AlbumController {
 		return new ResponseEntity<>(album, HttpStatus.OK);
 	}
 
+
 	@RequestMapping(value = "/album/id/{id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getPhotosFromAlbum(@PathVariable Integer id) {
 
@@ -55,23 +56,32 @@ public class AlbumController {
 	}
 
 
-
 	@PostMapping("/album/create")
-	public Album createAlbum(@RequestBody Map<String, String> body) {
+	public ResponseEntity<?> createAlbum(@RequestBody Map<String, String> body) {
 
-		// Read all parameters
 		String userIdString = body.get("user_id");
 		String name = body.get("name");
 
-		// Convert them into adequate format
-		int userId = Integer.parseInt(userIdString);
+		if(userIdString == null || name == null) {
+			return new ResponseEntity<>("Missing parameters", HttpStatus.BAD_REQUEST);
+		}
 
-		// Perform validations on them
-		// TODO: Implement this...
+		int userId = 0;
+		try {
+			userId = Integer.parseInt(userIdString);
+		}
+		catch(NumberFormatException eception) {
+			return new ResponseEntity<>("UserID is not a valid number", HttpStatus.BAD_REQUEST);
+		}
 
 
-
-		Album newAlbum = new Album(name, userId);
-		return albumRepository.save(newAlbum);
+		Album newAlbum = albumRepository.save(
+				new Album(name, userId));
+		
+		if(newAlbum == null) {
+			return new ResponseEntity<>("Album not created", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		return new ResponseEntity<>(newAlbum, HttpStatus.ACCEPTED);
 	}
 }
