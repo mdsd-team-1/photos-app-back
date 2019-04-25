@@ -1,5 +1,6 @@
 package co.edu.unal.photosappback.controller;
 
+import co.edu.unal.photosappback.model.Album;
 import co.edu.unal.photosappback.model.Photo;
 import co.edu.unal.photosappback.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,15 +20,24 @@ public class PhotoController {
     
     @PostMapping("/photo/upload")
     public Photo uploadPhoto(@RequestBody Map<String, String> body) {
-        
+    	
+    	// Read all parameters
+    	String userIdString = body.get("user_id");
     	String url = body.get("url");
         String name = body.get("name");
-        String albumIdString = body.get("album_id");
         
-        int albumId = Integer.parseInt(albumIdString);
+        // Convert them into adequate format
+        int userId = Integer.parseInt(userIdString);
         
-        Photo newPhoto = new Photo(name, url, albumId);
+        // Perform validations on them
+        // TODO: Implement this...
         
+        
+        
+    	// TODO: First we create a default Album for user, if it does not exist...
+    	Album newDefaultAlbum = new Album("Default", userId);
+    	
+        Photo newPhoto = new Photo(name, url, newDefaultAlbum.getId());
         return photoRepository.save(newPhoto);
     }
 }
