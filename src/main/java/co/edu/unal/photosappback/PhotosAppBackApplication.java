@@ -9,5 +9,4 @@ public class PhotosAppBackApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PhotosAppBackApplication.class, args);
 	}
-
 }

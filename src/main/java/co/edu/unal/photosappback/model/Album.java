@@ -5,27 +5,27 @@ import javax.persistence.*;
 @Entity
 @Table(name = "album")
 public class Album {
-	
+
 	private int id;
 	private String name;
 	private int userId;
-	
+
 	public Album() {}
-	
+
 	public Album(String name, int userId) {
 		this.name = name;
 		this.userId = userId;
 	}
-	
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	@Column(name = "name", nullable = false)
 	public String getName() {
 		return name;
@@ -33,7 +33,7 @@ public class Album {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Column(name = "user_id", nullable = false)
 	public int getUserId() {
 		return userId;
@@ -41,13 +41,13 @@ public class Album {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-	
-    @Override
-    public String toString() {
-        return "Album{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", user_id='" + userId + '\'' +
-                '}';
-    }
+
+	@Override
+	public String toString() {
+		return "Album{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", user_id='" + userId + '\'' +
+				'}';
+	}
 }

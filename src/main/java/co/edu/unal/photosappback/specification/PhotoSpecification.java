@@ -9,9 +9,9 @@ import co.edu.unal.photosappback.model.Photo;
 import co.edu.unal.photosappback.specification.criteria.SearchCriteria;
 
 public class PhotoSpecification implements Specification<Photo> {
-	
+
 	private SearchCriteria criteria;
-	
+
 	public PhotoSpecification(SearchCriteria criteria) {
 		this.criteria = criteria;
 	}
@@ -20,22 +20,22 @@ public class PhotoSpecification implements Specification<Photo> {
 	public Predicate toPredicate(Root<Photo> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
 		if (criteria.getOperation().equalsIgnoreCase(">")) {
-		    return criteriaBuilder.greaterThanOrEqualTo(
-		      root.<String> get(criteria.getKey()), criteria.getValue().toString());
+			return criteriaBuilder.greaterThanOrEqualTo(
+					root.<String> get(criteria.getKey()), criteria.getValue().toString());
 		} 
-		
+
 		else if (criteria.getOperation().equalsIgnoreCase("<")) {
-		    return criteriaBuilder.lessThanOrEqualTo(
-		      root.<String> get(criteria.getKey()), criteria.getValue().toString());
+			return criteriaBuilder.lessThanOrEqualTo(
+					root.<String> get(criteria.getKey()), criteria.getValue().toString());
 		}
-		
+
 		else if (criteria.getOperation().equalsIgnoreCase(":")) {
-		    if (root.get(criteria.getKey()).getJavaType() == String.class) {
-		        return criteriaBuilder.like(
-		          root.<String>get(criteria.getKey()), "%" + criteria.getValue() + "%");
-		    } else {
-		        return criteriaBuilder.equal(root.get(criteria.getKey()), criteria.getValue());
-		    }
+			if (root.get(criteria.getKey()).getJavaType() == String.class) {
+				return criteriaBuilder.like(
+						root.<String>get(criteria.getKey()), "%" + criteria.getValue() + "%");
+			} else {
+				return criteriaBuilder.equal(root.get(criteria.getKey()), criteria.getValue());
+			}
 		}
 		return null;
 	}

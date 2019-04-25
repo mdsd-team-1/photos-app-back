@@ -7,6 +7,8 @@ import co.edu.unal.photosappback.repository.PhotoRepository;
 import co.edu.unal.photosappback.specification.PhotoSpecification;
 import co.edu.unal.photosappback.specification.criteria.SearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
@@ -14,40 +16,62 @@ import java.util.Map;
 @RestController
 public class AlbumController {
 
-    @Autowired
-    AlbumRepository albumRepository;
-    
-    @Autowired
-    PhotoRepository photoRepository;
-    
-    @GetMapping("/album")
-    public Album getAlbum(int id) {
-    	return albumRepository.getOne(id);
-    }
-    
-    @GetMapping("/album/photos")
-    public List<Photo> getPhotos(int id) {
-    	PhotoSpecification photosPerAlbum = new PhotoSpecification(new SearchCriteria("album_id", ":", id));
-    	List<Photo> results = photoRepository.findAll(photosPerAlbum);
-    	return results;
-    }
-    
-    @PostMapping("/album/create")
-    public Album createAlbum(@RequestBody Map<String, String> body) {
-		
-    	// Read all parameters
-        String userIdString = body.get("user_id");
-        String name = body.get("name");
-     
-        // Convert them into adequate format
-        int userId = Integer.parseInt(userIdString);
-        
-        // Perform validations on them
-        // TODO: Implement this...
-        
-     
-        
-        Album newAlbum = new Album(name, userId);
-        return albumRepository.save(newAlbum);
-    }
+	@Autowired
+	AlbumRepository albumRepository;
+
+	@Autowired
+	PhotoRepository photoRepository;
+
+
+	@RequestMapping(value = "/album/id/{id}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<?> getAlbum(@PathVariable Integer id) {
+
+		Album album = albumRepository.getOne(id);
+
+		if(album == null){
+			return new ResponseEntity<>("Album not found", HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(album, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/album/id/{id}", method = RequestMethod.GET, produces = "application/json")
+	public ResponseEntity<?> getPhotosFromAlbum(@PathVariable Integer id) {
+
+		PhotoSpecification photosFromAlbumQuery = new PhotoSpecification(
+				new SearchCriteria("album_id", ":", id));
+
+		List<Photo> photos = photoRepository.findAll(photosFromAlbumQuery);
+
+		if(photos == null){
+			return new ResponseEntity<>("Photos from album not found", HttpStatus.NOT_FOUND);
+		}
+
+		if(photos.size() == 0){
+			return new ResponseEntity<>("Album has no photos", HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>(photos, HttpStatus.OK);
+	}
+
+
+
+	@PostMapping("/album/create")
+	public Album createAlbum(@RequestBody Map<String, String> body) {
+
+		// Read all parameters
+		String userIdString = body.get("user_id");
+		String name = body.get("name");
+
+		// Convert them into adequate format
+		int userId = Integer.parseInt(userIdString);
+
+		// Perform validations on them
+		// TODO: Implement this...
+
+
+
+		Album newAlbum = new Album(name, userId);
+		return albumRepository.save(newAlbum);
+	}
 }

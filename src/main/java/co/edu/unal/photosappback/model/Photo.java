@@ -10,17 +10,17 @@ public class Photo {
 	private String name;
 	private String url;
 	private int albumId;
-	
+
 	public Photo() {}
-	
+
 	public Photo(String name, String url, int albumId) {
 		this.name = name;
 		this.url = url;
 		this.albumId = albumId;
 	}
-	
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public int getId() {
 		return id;
 	}
@@ -52,13 +52,13 @@ public class Photo {
 		this.albumId = albumId;
 	}
 
-    @Override
-    public String toString() {
-        return "Photo{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", url='" + url + '\'' +
-                ", album_id='" + albumId + '\'' +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "Photo{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", url='" + url + '\'' +
+				", album_id='" + albumId + '\'' +
+				'}';
+	}
 }
