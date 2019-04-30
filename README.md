@@ -1,11 +1,8 @@
-# photos-app-back
-Back-end implemented using Spring
-
-### Photos API
-* URL: http://ec2-18-219-130-204.us-east-2.compute.amazonaws.com:8080/
+# Photos API
+* Production URL: http://ec2-18-219-130-204.us-east-2.compute.amazonaws.com:8080/
 
 ---
-#### User
+### User
 
 * GET  /user/id/**{id}**
 * GET  /user/**{id}**/albums
@@ -22,8 +19,9 @@ Back-end implemented using Spring
   "email": "peter@gmail.com"
 }
 ```
+
 ---
-#### Album
+### Album
 
 * GET  /album/id/**{id}**
 * GET  /album/**{id}**/photos
@@ -35,8 +33,9 @@ Back-end implemented using Spring
   "user_id": 1,
 }
 ```
+
 ---
-#### Photo
+### Photo
 
 * GET  /photo/id/**{id}**
 * POST /photo/upload
