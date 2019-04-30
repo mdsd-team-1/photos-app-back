@@ -40,7 +40,7 @@ public class UserController {
 	public ResponseEntity<?> getAlbumsFromUser(@PathVariable Long id) {
 
 		AlbumSpecification albumsFromUserQuery = new AlbumSpecification(
-				new SearchCriteria("user_id", ":", id));
+				new SearchCriteria("userId", ":", id));
 
 		List<Album> albums = albumRepository.findAll(albumsFromUserQuery);
 
@@ -78,6 +78,15 @@ public class UserController {
 		if(newUser == null){
 			return new ResponseEntity<>("User not created", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+		
+		
+		String defaultAlbumName = firstName + " " + lastName + " Album";
+		Album newAlbum = albumRepository.save(new Album(defaultAlbumName, newUser.getId()));
+
+		if(newAlbum == null) {
+			return new ResponseEntity<>("Album not created for new user", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
 
 		return new ResponseEntity<>(newUser, HttpStatus.ACCEPTED);
 	}

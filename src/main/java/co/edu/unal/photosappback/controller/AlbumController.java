@@ -40,7 +40,7 @@ public class AlbumController {
 	public ResponseEntity<?> getPhotosFromAlbum(@PathVariable Long id) {
 
 		PhotoSpecification photosFromAlbumQuery = new PhotoSpecification(
-				new SearchCriteria("album_id", ":", id));
+				new SearchCriteria("albumId", ":", id));
 
 		List<Photo> photos = photoRepository.findAll(photosFromAlbumQuery);
 

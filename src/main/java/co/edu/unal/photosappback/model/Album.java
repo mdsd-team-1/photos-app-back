@@ -18,7 +18,7 @@ public class Album {
 	}
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(unique = true, updatable = false, name = "id")
 	public int getId() {
 		return id;
 	}

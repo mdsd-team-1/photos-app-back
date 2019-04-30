@@ -31,9 +31,20 @@ scp bash/stop.sh photos.mdsd.com:/home/ubuntu/deploy
 scp bash/start_silent.sh photos.mdsd.com:/home/ubuntu/deploy
 
 
+
 Ejecutar los scripts:
 chmod 755 start.sh
 chmod 755 stop.sh
 chmod 755 start_silent.sh
 
+Lanzar el app sin que se cierre la sesion SSH
 sh start_silent.sh
+
+
+
+Listar todos los procesos corriendo
+ps -ax
+
+Matar proceso por pid
+Kill 21291
+
