@@ -20,7 +20,7 @@ public class Photo {
 	}
 
 	@Id
-	@Column(unique = true, updatable = false, name = "id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public int getId() {
 		return id;
 	}

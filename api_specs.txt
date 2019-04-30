@@ -1,0 +1,28 @@
+API Specs
+URL: http://ec2-18-219-130-204.us-east-2.compute.amazonaws.com:8080/
+
+GET  /user/id/{id}
+GET  /user/{id}/albums
+GET  /user/{id}/photos (IN PROGRESS)
+
+POST /user/create (RETURNING ERROR)
+{
+  "first_name": "Peter",
+  "last_name": "Jhonson",
+  "profile_description": "Peter description",
+  "user_name": "petjhon",
+  "password": "123",
+  "email": "peter@gmail.com"
+}
+
+GET  /album/id/{id}
+GET  /album/{id}/photos
+
+POST /album/create (RETURNING ERROR)
+{
+	"name": "Vacations",
+	"user_id": 1,
+}
+
+GET  /photo/id/{id}
+POST /photo/upload (IN PROGRESS)
