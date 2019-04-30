@@ -1,0 +1,27 @@
+API Specs
+
+URL: http://ec2-18-219-130-204.us-east-2.compute.amazonaws.com:8080/
+
+GET  /user/id/{id}
+GET  /user/{id}/albums
+
+POST /user/create
+{
+  "first_name": "Peter",
+  "last_name": "Jhonson",
+  "profile_description": "Peter description",
+  "user_name": "petjhon",
+  "password": "123",
+  "email": "peter@gmail.com"
+}
+
+GET  /album/id/{id}
+GET  /album/{id}/photos
+POST /album/create
+
+GET  /photo/id/{id}
+POST /photo/upload (NOT READY YET...)
+
+Ejemplos:
+GET http://ec2-18-219-130-204.us-east-2.compute.amazonaws.com:8080/user/id/1
+GET http://ec2-18-219-130-204.us-east-2.compute.amazonaws.com:8080/user/1/albums
