@@ -1,12 +1,12 @@
 package co.edu.unal.photosappback.controller;
 
-import co.edu.unal.photosappback.controller.exception.AlbumNotCreatedForNewUserException;
-import co.edu.unal.photosappback.controller.exception.AlbumsFromUserNotFoundException;
-import co.edu.unal.photosappback.controller.exception.MissingParametersForNewUserException;
-import co.edu.unal.photosappback.controller.exception.UserHasNoAlbumsException;
-import co.edu.unal.photosappback.controller.exception.UserHasNoPhotosException;
-import co.edu.unal.photosappback.controller.exception.UserNotCreatedException;
-import co.edu.unal.photosappback.controller.exception.UserNotFoundException;
+import co.edu.unal.photosappback.controller.exception.user.AlbumNotCreatedForNewUserException;
+import co.edu.unal.photosappback.controller.exception.user.AlbumsFromUserNotFoundException;
+import co.edu.unal.photosappback.controller.exception.user.MissingParametersForNewUserException;
+import co.edu.unal.photosappback.controller.exception.user.UserHasNoAlbumsException;
+import co.edu.unal.photosappback.controller.exception.user.UserHasNoPhotosException;
+import co.edu.unal.photosappback.controller.exception.user.UserNotCreatedException;
+import co.edu.unal.photosappback.controller.exception.user.UserNotFoundException;
 import co.edu.unal.photosappback.model.Album;
 import co.edu.unal.photosappback.model.Photo;
 import co.edu.unal.photosappback.model.User;
@@ -20,12 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RestController
 public class UserController {
@@ -155,7 +152,7 @@ public class UserController {
 
 
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<?> handleException(HttpServletRequest req, Exception exception) {
+	public ResponseEntity<?> handleException(Exception exception) {
 
 		if(exception instanceof UserNotFoundException) {
 			return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);

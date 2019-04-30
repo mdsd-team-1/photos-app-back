@@ -3,9 +3,9 @@ URL: http://ec2-18-219-130-204.us-east-2.compute.amazonaws.com:8080/
 
 GET  /user/id/{id}
 GET  /user/{id}/albums
-GET  /user/{id}/photos (IN PROGRESS)
+GET  /user/{id}/photos
 
-POST /user/create (RETURNING ERROR)
+POST /user/create
 {
   "first_name": "Peter",
   "last_name": "Jhonson",
@@ -18,11 +18,11 @@ POST /user/create (RETURNING ERROR)
 GET  /album/id/{id}
 GET  /album/{id}/photos
 
-POST /album/create (RETURNING ERROR)
+POST /album/create
 {
 	"name": "Vacations",
 	"user_id": 1,
 }
 
 GET  /photo/id/{id}
-POST /photo/upload (IN PROGRESS)
+POST /photo/upload

@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PhotosAppBackApplication {
 	
-	public static double version = 0.2;
+	public static double version = 0.3;
 
 	public static void main(String[] args) {
 		SpringApplication.run(PhotosAppBackApplication.class, args);

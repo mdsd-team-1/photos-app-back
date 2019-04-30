@@ -1,5 +1,7 @@
 package co.edu.unal.photosappback.controller;
 
+import co.edu.unal.photosappback.controller.exception.album.AlbumNotFoundException;
+import co.edu.unal.photosappback.controller.exception.photo.PhotoNotFoundException;
 import co.edu.unal.photosappback.model.Album;
 import co.edu.unal.photosappback.model.Photo;
 import co.edu.unal.photosappback.repository.PhotoRepository;
@@ -17,12 +19,19 @@ public class PhotoController {
 
 
 	@RequestMapping(value = "/photo/id/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getPhoto(@PathVariable Long id) {
+	public ResponseEntity<?> getPhoto(@PathVariable Long id) throws Exception {
 
-		Photo photo = photoRepository.getOne(id.intValue());
+		Photo photo = null;
+
+		try {
+			photo = photoRepository.getOne(id.intValue());
+
+		} catch(Exception e) {
+			throw new PhotoNotFoundException();
+		}
 
 		if(photo == null){
-			return new ResponseEntity<>("Photo not found", HttpStatus.NOT_FOUND);
+			throw new PhotoNotFoundException();
 		}
 
 		return new ResponseEntity<>(photo, HttpStatus.OK);
@@ -51,5 +60,16 @@ public class PhotoController {
 
 		Photo newPhoto = new Photo(name, url, newDefaultAlbum.getId());
 		return photoRepository.save(newPhoto);
+	}
+
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<?> handleException(Exception exception) {
+
+		if(exception instanceof PhotoNotFoundException) {
+			return new ResponseEntity<>("Photo not found", HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
 	}
 }

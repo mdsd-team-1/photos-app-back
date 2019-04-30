@@ -1,5 +1,11 @@
 package co.edu.unal.photosappback.controller;
 
+import co.edu.unal.photosappback.controller.exception.album.AlbumHasNoPhotosException;
+import co.edu.unal.photosappback.controller.exception.album.AlbumNotCreatedException;
+import co.edu.unal.photosappback.controller.exception.album.AlbumNotFoundException;
+import co.edu.unal.photosappback.controller.exception.album.MissingParametersForNewAlbumException;
+import co.edu.unal.photosappback.controller.exception.album.PhotosFromAlbumNotFoundException;
+import co.edu.unal.photosappback.controller.exception.album.UserIdIsNotNumberException;
 import co.edu.unal.photosappback.model.Album;
 import co.edu.unal.photosappback.model.Photo;
 import co.edu.unal.photosappback.repository.AlbumRepository;
@@ -24,12 +30,19 @@ public class AlbumController {
 
 
 	@RequestMapping(value = "/album/id/{id}", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getAlbum(@PathVariable Long id) {
+	public ResponseEntity<?> getAlbum(@PathVariable Long id) throws Exception {
 
-		Album album = albumRepository.getOne(id.intValue());
+		Album album = null;
+		
+		try {
+			album = albumRepository.getOne(id.intValue());
+
+		} catch(Exception e) {
+			throw new AlbumNotFoundException();
+		}
 
 		if(album == null){
-			return new ResponseEntity<>("Album not found", HttpStatus.NOT_FOUND);
+			throw new AlbumNotFoundException();
 		}
 
 		return new ResponseEntity<>(album, HttpStatus.OK);
@@ -37,7 +50,7 @@ public class AlbumController {
 
 
 	@RequestMapping(value = "/album/{id}/photos", method = RequestMethod.GET, produces = "application/json")
-	public ResponseEntity<?> getPhotosFromAlbum(@PathVariable Long id) {
+	public ResponseEntity<?> getPhotosFromAlbum(@PathVariable Long id) throws Exception {
 
 		PhotoSpecification photosFromAlbumQuery = new PhotoSpecification(
 				new SearchCriteria("albumId", ":", id));
@@ -45,11 +58,11 @@ public class AlbumController {
 		List<Photo> photos = photoRepository.findAll(photosFromAlbumQuery);
 
 		if(photos == null){
-			return new ResponseEntity<>("Photos from album not found", HttpStatus.NOT_FOUND);
+			throw new PhotosFromAlbumNotFoundException();
 		}
 
 		if(photos.size() == 0){
-			return new ResponseEntity<>("Album has no photos", HttpStatus.NOT_FOUND);
+			throw new AlbumHasNoPhotosException();
 		}
 
 		return new ResponseEntity<>(photos, HttpStatus.OK);
@@ -57,21 +70,21 @@ public class AlbumController {
 
 
 	@PostMapping("/album/create")
-	public ResponseEntity<?> createAlbum(@RequestBody Map<String, String> body) {
+	public ResponseEntity<?> createAlbum(@RequestBody Map<String, String> body) throws Exception {
 
 		String userIdString = body.get("user_id");
 		String name = body.get("name");
 
 		if(userIdString == null || name == null) {
-			return new ResponseEntity<>("Missing parameters", HttpStatus.BAD_REQUEST);
+			throw new MissingParametersForNewAlbumException();
 		}
 
 		int userId = 0;
 		try {
 			userId = Integer.parseInt(userIdString);
 		}
-		catch(NumberFormatException eception) {
-			return new ResponseEntity<>("UserID is not a valid number", HttpStatus.BAD_REQUEST);
+		catch(NumberFormatException exception) {
+			throw new UserIdIsNotNumberException();
 		}
 
 
@@ -79,9 +92,35 @@ public class AlbumController {
 				new Album(name, userId));
 
 		if(newAlbum == null) {
-			return new ResponseEntity<>("Album not created", HttpStatus.INTERNAL_SERVER_ERROR);
+			throw new AlbumNotCreatedException();
 		}
 
 		return new ResponseEntity<>(newAlbum, HttpStatus.ACCEPTED);
+	}
+
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<?> handleException(Exception exception) {
+
+		if(exception instanceof AlbumNotFoundException) {
+			return new ResponseEntity<>("Album not found", HttpStatus.NOT_FOUND);
+
+		} else if(exception instanceof PhotosFromAlbumNotFoundException) {
+			return new ResponseEntity<>("Photos from album not found", HttpStatus.NOT_FOUND);
+
+		} else if(exception instanceof AlbumHasNoPhotosException) {
+			return new ResponseEntity<>("Album has no photos", HttpStatus.NOT_FOUND);
+
+		} else if(exception instanceof MissingParametersForNewAlbumException) {
+			return new ResponseEntity<>("Missing parameters for new album", HttpStatus.BAD_REQUEST);
+
+		} else if(exception instanceof UserIdIsNotNumberException) {
+			return new ResponseEntity<>("User Id is not a number", HttpStatus.BAD_REQUEST);
+
+		} else if(exception instanceof AlbumNotCreatedException) {
+			return new ResponseEntity<>("Album not created", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+		return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
 	}
 }
