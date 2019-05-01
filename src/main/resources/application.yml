@@ -1,0 +1,5 @@
+amazonProperties:
+  endpointUrl: https://s3.amazonaws.com
+  accessKey: AKIA3LS4ZVUMSJQU2IOH
+  secretKey: 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
+  bucketName: co.edu.unal.photosappback.photos-storage

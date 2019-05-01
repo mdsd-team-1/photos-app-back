@@ -1,6 +1,6 @@
 package co.edu.unal.photosappback.controller;
 
-import co.edu.unal.photosappback.controller.exception.album.AlbumNotFoundException;
+import co.edu.unal.photosappback.controller.amazon.AmazonClient;
 import co.edu.unal.photosappback.controller.exception.photo.PhotoNotFoundException;
 import co.edu.unal.photosappback.model.Album;
 import co.edu.unal.photosappback.model.Photo;
@@ -9,13 +9,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.util.Map;
 
 @RestController
+@RequestMapping("/storage/")
 public class PhotoController {
+	
+	private AmazonClient amazonClient;
 
 	@Autowired
 	PhotoRepository photoRepository;
+	
+    @Autowired
+    PhotoController(AmazonClient amazonClient) {
+        this.amazonClient = amazonClient;
+    }
+    
+    @PostMapping("/uploadFile")
+    public String uploadFile(@RequestPart(value = "file") MultipartFile file) {
+    	// TODO: HERE!!!!
+        return this.amazonClient.uploadFile(file);
+    }
+    
+    @DeleteMapping("/deleteFile")
+    public String deleteFile(@RequestPart(value = "url") String fileUrl) {
+        return this.amazonClient.deleteFileFromS3Bucket(fileUrl);
+    }
+    
+    
 
 
 	@RequestMapping(value = "/photo/id/{id}", method = RequestMethod.GET, produces = "application/json")
@@ -38,6 +61,7 @@ public class PhotoController {
 	}
 
 
+	/*
 	// TODO: Not fully implemented yet...
 	@PostMapping("/photo/upload")
 	public Photo uploadPhoto(@RequestBody Map<String, String> body) {
@@ -61,6 +85,7 @@ public class PhotoController {
 		Photo newPhoto = new Photo(name, url, newDefaultAlbum.getId());
 		return photoRepository.save(newPhoto);
 	}
+	*/
 
 
 	@ExceptionHandler(Exception.class)

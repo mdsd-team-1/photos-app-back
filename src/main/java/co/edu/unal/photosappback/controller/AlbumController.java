@@ -33,7 +33,7 @@ public class AlbumController {
 	public ResponseEntity<?> getAlbum(@PathVariable Long id) throws Exception {
 
 		Album album = null;
-		
+
 		try {
 			album = albumRepository.getOne(id.intValue());
 
