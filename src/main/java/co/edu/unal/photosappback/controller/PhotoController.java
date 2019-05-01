@@ -5,6 +5,7 @@ import co.edu.unal.photosappback.controller.exception.photo.PhotoNotCreatedExcep
 import co.edu.unal.photosappback.controller.exception.photo.PhotoNotDeletedException;
 import co.edu.unal.photosappback.controller.exception.photo.PhotoNotFoundException;
 import co.edu.unal.photosappback.controller.exception.photo.PhotoUploadErrorException;
+import co.edu.unal.photosappback.controller.exception.user.AlbumsFromUserNotFoundException;
 import co.edu.unal.photosappback.model.Photo;
 import co.edu.unal.photosappback.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +51,10 @@ public class PhotoController {
 	@PostMapping("/photo/upload")
 	public ResponseEntity<?> uploadPhoto(@RequestPart(value = "file") MultipartFile file) throws Exception {
 
-		// TODO get data from Request
+		// TODO Get photo info from Request
 		int albumId = 0;
-		String photoName = "Default";
+		String photoName = "Photo Name";
+
 
 		String photoUrl = null;
 
@@ -98,6 +100,15 @@ public class PhotoController {
 
 		if(exception instanceof PhotoNotFoundException) {
 			return new ResponseEntity<>("Photo not found", HttpStatus.NOT_FOUND);
+
+		} else if(exception instanceof PhotoUploadErrorException) {
+			return new ResponseEntity<>("Photo upload error", HttpStatus.INTERNAL_SERVER_ERROR);
+
+		} else if(exception instanceof PhotoNotCreatedException) {
+			return new ResponseEntity<>("Photo not created", HttpStatus.INTERNAL_SERVER_ERROR);
+
+		} else if(exception instanceof PhotoNotDeletedException) {
+			return new ResponseEntity<>("Photo not deleted", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
 		return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
