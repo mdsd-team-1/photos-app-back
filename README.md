@@ -20,10 +20,9 @@
 }
 ```
 
-* POST /user/edit
+* POST /user/**{id}**/edit
 ```json
 {
-  "id": "1",
   "first_name": "Peter",
   "last_name": "Jhonson",
   "profile_description": "Peter description",
