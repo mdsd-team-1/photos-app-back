@@ -48,7 +48,7 @@ public class PhotoController {
 	}
 
 
-	@PostMapping("/photo/upload/photoName={photoName}&albumId={albumId}")
+	@PostMapping("/photo/upload/?photoName={photoName}&albumId={albumId}")
 	public ResponseEntity<?> uploadPhoto(@RequestPart(value = "file") MultipartFile file, @PathVariable String photoName, @PathVariable Long albumId) throws Exception {
 
 		if(file == null || photoName == null || albumId == null) {
