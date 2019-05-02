@@ -1,6 +1,7 @@
 package co.edu.unal.photosappback.controller;
 
 import co.edu.unal.photosappback.controller.amazon.AmazonClient;
+import co.edu.unal.photosappback.controller.exception.photo.MissingParametersForNewPhotoException;
 import co.edu.unal.photosappback.controller.exception.photo.PhotoNotCreatedException;
 import co.edu.unal.photosappback.controller.exception.photo.PhotoNotDeletedException;
 import co.edu.unal.photosappback.controller.exception.photo.PhotoNotFoundException;
@@ -47,13 +48,12 @@ public class PhotoController {
 	}
 
 
-	@PostMapping("/photo/upload")
-	public ResponseEntity<?> uploadPhoto(@RequestPart(value = "file") MultipartFile file) throws Exception {
+	@PostMapping("/photo/upload/photoName={photoName}&albumId={albumId}")
+	public ResponseEntity<?> uploadPhoto(@RequestPart(value = "file") MultipartFile file, @PathVariable String photoName, @PathVariable Long albumId) throws Exception {
 
-		// TODO Get photo info from Request
-		int albumId = 0;
-		String photoName = "Photo Name";
-
+		if(file == null || photoName == null || albumId == null) {
+			throw new MissingParametersForNewPhotoException();
+		}
 
 		String photoUrl = null;
 
@@ -68,7 +68,7 @@ public class PhotoController {
 
 		try {
 			addedPhoto = photoRepository.save(
-					new Photo(photoName, photoUrl, albumId));
+					new Photo(photoName, photoUrl, albumId.intValue()));
 
 		} catch(Exception e) {
 			throw new PhotoNotCreatedException();
@@ -91,7 +91,7 @@ public class PhotoController {
 		} catch(Exception e) {
 			throw new PhotoNotDeletedException();
 		}
-		
+
 		return new ResponseEntity<>("Photo deleted", HttpStatus.OK);
 	}
 
