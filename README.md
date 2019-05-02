@@ -20,6 +20,19 @@
 }
 ```
 
+* POST /user/edit
+```json
+{
+  "id": "1",
+  "first_name": "Peter",
+  "last_name": "Jhonson",
+  "profile_description": "Peter description",
+  "user_name": "petjhon",
+  "password": "123",
+  "email": "peter@gmail.com"
+}
+```
+
 ---
 ### Album
 
@@ -39,3 +52,11 @@
 
 * GET  /photo/id/**{id}**
 * POST /photo/upload
+
+```
+{
+  "file": "photo.png", <- File selected by user
+  "name": "Sunset",
+  "album_id": "1"
+}
+```
