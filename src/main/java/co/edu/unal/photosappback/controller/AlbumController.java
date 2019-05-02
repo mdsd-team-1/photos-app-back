@@ -87,7 +87,6 @@ public class AlbumController {
 			throw new UserIdIsNotNumberException();
 		}
 
-
 		Album newAlbum = albumRepository.save(
 				new Album(name, userId));
 
@@ -95,7 +94,7 @@ public class AlbumController {
 			throw new AlbumNotCreatedException();
 		}
 
-		return new ResponseEntity<>(newAlbum, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(newAlbum, HttpStatus.CREATED);
 	}
 
 
@@ -121,6 +120,6 @@ public class AlbumController {
 			return new ResponseEntity<>("Album not created", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>("Error", HttpStatus.NOT_FOUND);
 	}
 }

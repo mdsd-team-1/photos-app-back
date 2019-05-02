@@ -5,7 +5,6 @@ import co.edu.unal.photosappback.controller.exception.photo.PhotoNotCreatedExcep
 import co.edu.unal.photosappback.controller.exception.photo.PhotoNotDeletedException;
 import co.edu.unal.photosappback.controller.exception.photo.PhotoNotFoundException;
 import co.edu.unal.photosappback.controller.exception.photo.PhotoUploadErrorException;
-import co.edu.unal.photosappback.controller.exception.user.AlbumsFromUserNotFoundException;
 import co.edu.unal.photosappback.model.Photo;
 import co.edu.unal.photosappback.repository.PhotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,19 +78,21 @@ public class PhotoController {
 			throw new PhotoNotCreatedException();
 		}
 
-		return new ResponseEntity<>(addedPhoto, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(addedPhoto, HttpStatus.CREATED);
 	}
 
 
 	@PostMapping("/photo/delete")
-	public String deleteFile(@RequestPart(value = "url") String fileUrl) throws Exception {
+	public ResponseEntity<?> deleteFile(@RequestPart(value = "url") String fileUrl) throws Exception {
 
 		try {
-			return this.amazonClient.deleteFileFromS3Bucket(fileUrl);
+			this.amazonClient.deleteFileFromS3Bucket(fileUrl);
 
 		} catch(Exception e) {
 			throw new PhotoNotDeletedException();
 		}
+		
+		return new ResponseEntity<>("Photo deleted", HttpStatus.OK);
 	}
 
 
@@ -111,6 +112,6 @@ public class PhotoController {
 			return new ResponseEntity<>("Photo not deleted", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>("Error", HttpStatus.NOT_FOUND);
 	}
 }

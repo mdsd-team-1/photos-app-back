@@ -1,12 +1,16 @@
 package co.edu.unal.photosappback.controller;
 
+import co.edu.unal.photosappback.controller.exception.album.UserIdIsNotNumberException;
 import co.edu.unal.photosappback.controller.exception.user.AlbumNotCreatedForNewUserException;
 import co.edu.unal.photosappback.controller.exception.user.AlbumsFromUserNotFoundException;
+import co.edu.unal.photosappback.controller.exception.user.MissingParametersForEditUserException;
 import co.edu.unal.photosappback.controller.exception.user.MissingParametersForNewUserException;
 import co.edu.unal.photosappback.controller.exception.user.UserHasNoAlbumsException;
 import co.edu.unal.photosappback.controller.exception.user.UserHasNoPhotosException;
 import co.edu.unal.photosappback.controller.exception.user.UserNotCreatedException;
+import co.edu.unal.photosappback.controller.exception.user.UserNotEditedException;
 import co.edu.unal.photosappback.controller.exception.user.UserNotFoundException;
+import co.edu.unal.photosappback.controller.exception.user.UserToEditDoesNotExist;
 import co.edu.unal.photosappback.model.Album;
 import co.edu.unal.photosappback.model.Photo;
 import co.edu.unal.photosappback.model.User;
@@ -147,7 +151,54 @@ public class UserController {
 			throw new AlbumNotCreatedForNewUserException();
 		}
 
-		return new ResponseEntity<>(newUser, HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+	}
+
+
+	@PostMapping("/user/{id}/edit")
+	public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody Map<String, String> body) throws Exception {
+
+		User existingUser = null;
+
+		try {
+			existingUser = userRepository.getOne(id.intValue());
+
+		} catch(Exception e) {
+			throw new UserToEditDoesNotExist();
+		}
+
+		if(existingUser == null){
+			throw new UserToEditDoesNotExist();
+		}
+
+		String firstName = body.get("first_name");
+		String lastName = body.get("last_name");
+		String profileDescription = body.get("profile_description");
+		String userName = body.get("user_name");
+		String password = body.get("password");
+		String email = body.get("email");
+
+		if(firstName == null || lastName == null || profileDescription == null ||
+				userName == null || password == null || email == null) {
+
+			throw new MissingParametersForEditUserException();
+		}
+
+		existingUser.setFirstName(firstName);
+		existingUser.setLastName(lastName);
+		existingUser.setProfileDescription(profileDescription);
+		existingUser.setUserName(userName);
+		existingUser.setPassword(password);
+		existingUser.setEmail(email);
+
+		try {
+			userRepository.save(existingUser);
+
+		} catch(Exception e) {
+			throw new UserNotEditedException();
+		}
+
+		return new ResponseEntity<>("User edited", HttpStatus.OK);
 	}
 
 
@@ -174,8 +225,20 @@ public class UserController {
 
 		} else if(exception instanceof AlbumNotCreatedForNewUserException) {
 			return new ResponseEntity<>("Album not created for new user", HttpStatus.INTERNAL_SERVER_ERROR);
+
+		} else if(exception instanceof MissingParametersForEditUserException) {
+			return new ResponseEntity<>("Missing parameters for edit user", HttpStatus.BAD_REQUEST);
+
+		} else if(exception instanceof UserIdIsNotNumberException) {
+			return new ResponseEntity<>("UserId is not number", HttpStatus.BAD_REQUEST);
+
+		} else if(exception instanceof UserToEditDoesNotExist) {
+			return new ResponseEntity<>("User to edit does not exist", HttpStatus.BAD_REQUEST);
+
+		} else if(exception instanceof UserNotEditedException) {
+			return new ResponseEntity<>("User not edited exception", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 
-		return new ResponseEntity<>("Not Found", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<>("Error", HttpStatus.NOT_FOUND);
 	}
 }
