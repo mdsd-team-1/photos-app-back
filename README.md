@@ -50,12 +50,9 @@
 ### Photo
 
 * GET  /photo/id/**{id}**
-* POST /photo/upload
-
+* POST /photo/upload/photoName=**{photoName}**&albumId=**{albumId}**
 ```
 {
-  "file": "photo.png", <- File selected by user
-  "name": "Sunset",
-  "album_id": "1"
+  "file": "photo.png" <- File selected by user
 }
 ```
