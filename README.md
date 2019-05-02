@@ -50,7 +50,7 @@
 ### Photo
 
 * GET  /photo/id/**{id}**
-* POST /photo/upload/photoName=**{photoName}**&albumId=**{albumId}**
+* POST /photo/upload/?photoName=**{photoName}**&albumId=**{albumId}**
 ```
 {
   "file": "photo.png" <- File selected by user
