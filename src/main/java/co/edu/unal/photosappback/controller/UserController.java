@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
 	@Autowired
@@ -41,7 +42,7 @@ public class UserController {
 	PhotoRepository photoRepository;
 
 
-	@RequestMapping(value = "/user/id/{id}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getUser(@PathVariable Long id) throws Exception {
 
 		User user = null;
@@ -61,7 +62,7 @@ public class UserController {
 	}
 
 
-	@RequestMapping(value = "/user/{id}/albums", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/{id}/albums", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getAlbumsFromUser(@PathVariable Long id) throws Exception {
 
 		AlbumSpecification albumsFromUserQuery = new AlbumSpecification(
@@ -81,7 +82,7 @@ public class UserController {
 	}
 
 
-	@RequestMapping(value = "/user/{id}/photos", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/{id}/photos", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getPhotosFromUser(@PathVariable Long id) throws Exception {
 
 		AlbumSpecification albumsFromUserQuery = new AlbumSpecification(
@@ -119,7 +120,7 @@ public class UserController {
 	}
 
 
-	@PostMapping("/user/create")
+	@PostMapping("/create")
 	public ResponseEntity<?> createUser(@RequestBody Map<String, String> body) throws Exception {
 
 		String firstName = body.get("first_name");
@@ -155,7 +156,7 @@ public class UserController {
 	}
 
 
-	@PutMapping("/user/{id}/edit")
+	@PutMapping("/{id}/edit")
 	public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody Map<String, String> body) throws Exception {
 
 		User existingUser = null;
