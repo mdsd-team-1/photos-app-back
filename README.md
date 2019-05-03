@@ -20,15 +20,13 @@
 }
 ```
 
-* POST /user/**{id}**/edit
+* PUT /user/**{id}**/edit
 ```json
 {
   "first_name": "Peter",
   "last_name": "Jhonson",
   "profile_description": "Peter description",
-  "user_name": "petjhon",
-  "password": "123",
-  "email": "peter@gmail.com"
+  "user_name": "petjhon"
 }
 ```
 
