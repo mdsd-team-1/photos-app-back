@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
+@RequestMapping("/photo")
 public class PhotoController {
 
 	private AmazonClient amazonClient;
@@ -29,7 +30,7 @@ public class PhotoController {
 	}
 
 
-	@RequestMapping(value = "/photo/id/{id}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getPhoto(@PathVariable Long id) throws Exception {
 
 		Photo photo = null;
@@ -49,7 +50,7 @@ public class PhotoController {
 	}
 
 
-	@PostMapping("/photo/upload/")
+	@PostMapping("/upload/")
 	public ResponseEntity<?> uploadPhoto(
 			@RequestPart(value = "file", required = true) MultipartFile file, 
 			@RequestPart(value = "photo_name", required = true) String photoName,

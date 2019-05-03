@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/album")
 public class AlbumController {
 
 	@Autowired
@@ -29,7 +30,7 @@ public class AlbumController {
 	PhotoRepository photoRepository;
 
 
-	@RequestMapping(value = "/album/id/{id}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/id/{id}", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getAlbum(@PathVariable Long id) throws Exception {
 
 		Album album = null;
@@ -49,7 +50,7 @@ public class AlbumController {
 	}
 
 
-	@RequestMapping(value = "/album/{id}/photos", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = "/{id}/photos", method = RequestMethod.GET, produces = "application/json")
 	public ResponseEntity<?> getPhotosFromAlbum(@PathVariable Long id) throws Exception {
 
 		PhotoSpecification photosFromAlbumQuery = new PhotoSpecification(
@@ -69,7 +70,7 @@ public class AlbumController {
 	}
 
 
-	@PostMapping("/album/create")
+	@PostMapping("/create")
 	public ResponseEntity<?> createAlbum(@RequestBody Map<String, String> body) throws Exception {
 
 		String userIdString = body.get("user_id");

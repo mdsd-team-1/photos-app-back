@@ -28,17 +28,7 @@ import javax.annotation.Resource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .anonymous().disable()
-                .authorizeRequests()
-                .antMatchers("/oauth/token").permitAll()
-                .antMatchers("/**").authenticated();
-    }
-
-    @Bean
+ @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();

@@ -20,6 +20,16 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/user/**").access("hasRole('WEB_CLIENT')")
                 .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
+		http.
+				anonymous().disable()
+				.authorizeRequests()
+				.antMatchers("/album/**").access("hasRole('WEB_CLIENT')")
+				.and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
+		http.
+				anonymous().disable()
+				.authorizeRequests()
+				.antMatchers("/photo/**").access("hasRole('WEB_CLIENT')")
+				.and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
 	}
 
 }
