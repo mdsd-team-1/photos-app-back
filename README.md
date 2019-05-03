@@ -53,7 +53,7 @@
 * GET  /photo/id/**{id}**
 * POST /photo/upload/
 > Request Body:
-```json
+```
 {
   "file": "photo.png", <- File selected by user
   "photo_name": "My Cat",
