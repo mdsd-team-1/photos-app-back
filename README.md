@@ -4,11 +4,11 @@
 ---
 ### User
 
-* GET  /user/id/**{id}**
-* GET  /user/**{id}**/albums
-* GET  /user/**{id}**/photos
+* GET  /user/id/**{id}**?access_token={{$access_token}}
+* GET  /user/**{id}**/albums?access_token={{$access_token}}
+* GET  /user/**{id}**/photos?access_token={{$access_token}}
 
-* POST /user/create
+* POST /user/create?access_token={{$access_token}}
 > Request Body:
 ```json
 {
@@ -21,7 +21,7 @@
 }
 ```
 
-* PUT /user/**{id}**/edit
+* PUT /user/**{id}**/edit?access_token={{$access_token}}
 > Request Body:
 ```json
 {
@@ -35,10 +35,10 @@
 ---
 ### Album
 
-* GET  /album/id/**{id}**
-* GET  /album/**{id}**/photos
+* GET  /album/id/**{id}**?access_token={{$access_token}}
+* GET  /album/**{id}**/photos?access_token={{$access_token}}
 
-* POST /album/create
+* POST /album/create?access_token={{$access_token}}
 > Request Body:
 ```json
 {
@@ -50,8 +50,8 @@
 ---
 ### Photo
 
-* GET  /photo/id/**{id}**
-* POST /photo/upload/
+* GET  /photo/id/**{id}**?access_token={{$access_token}}
+* POST /photo/upload/?access_token={{$access_token}}
 > Request Body:
 ```
 {
