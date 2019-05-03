@@ -79,11 +79,12 @@ public class AlbumController {
 			throw new MissingParametersForNewAlbumException();
 		}
 
-		int userId = 0;
+		int userId = -1;
+
 		try {
 			userId = Integer.parseInt(userIdString);
-		}
-		catch(NumberFormatException exception) {
+
+		} catch(NumberFormatException exception) {
 			throw new UserIdIsNotNumberException();
 		}
 

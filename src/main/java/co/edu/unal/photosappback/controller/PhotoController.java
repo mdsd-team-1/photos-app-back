@@ -1,6 +1,7 @@
 package co.edu.unal.photosappback.controller;
 
 import co.edu.unal.photosappback.controller.amazon.AmazonClient;
+import co.edu.unal.photosappback.controller.exception.photo.AlbumIdIsNotNumberException;
 import co.edu.unal.photosappback.controller.exception.photo.MissingParametersForNewPhotoException;
 import co.edu.unal.photosappback.controller.exception.photo.PhotoNotCreatedException;
 import co.edu.unal.photosappback.controller.exception.photo.PhotoNotDeletedException;
@@ -48,12 +49,30 @@ public class PhotoController {
 	}
 
 
-	@PostMapping("/photo/upload/?photoName={photoName}&albumId={albumId}")
-	public ResponseEntity<?> uploadPhoto(@RequestPart(value = "file") MultipartFile file, @PathVariable String photoName, @PathVariable Long albumId) throws Exception {
+	@PostMapping("/photo/upload/")
+	public ResponseEntity<?> uploadPhoto(
+			@RequestPart(value = "file", required = true) MultipartFile file, 
+			@RequestPart(value = "photo_name", required = true) String photoName,
+			@RequestPart(value = "album_id", required = true) String albumId) throws Exception  {
 
 		if(file == null || photoName == null || albumId == null) {
 			throw new MissingParametersForNewPhotoException();
 		}
+
+
+		int albumIdInt = -1;
+
+		try {
+			albumIdInt = Integer.parseInt(albumId);
+
+		} catch(Exception exception) {
+			throw new AlbumIdIsNotNumberException();
+		}
+
+		if(albumIdInt == -1) {
+			throw new AlbumIdIsNotNumberException();
+		}
+
 
 		String photoUrl = null;
 
@@ -64,11 +83,16 @@ public class PhotoController {
 			throw new PhotoUploadErrorException();
 		}
 
+		if(photoUrl == null) {
+			throw new PhotoUploadErrorException();
+		}
+
+
 		Photo addedPhoto = null;
 
 		try {
 			addedPhoto = photoRepository.save(
-					new Photo(photoName, photoUrl, albumId.intValue()));
+					new Photo(photoName, photoUrl, albumIdInt));
 
 		} catch(Exception e) {
 			throw new PhotoNotCreatedException();

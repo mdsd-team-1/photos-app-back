@@ -155,7 +155,7 @@ public class UserController {
 	}
 
 
-	@PostMapping("/user/{id}/edit")
+	@PutMapping("/user/{id}/edit")
 	public ResponseEntity<?> editUser(@PathVariable Long id, @RequestBody Map<String, String> body) throws Exception {
 
 		User existingUser = null;
@@ -175,11 +175,9 @@ public class UserController {
 		String lastName = body.get("last_name");
 		String profileDescription = body.get("profile_description");
 		String userName = body.get("user_name");
-		String password = body.get("password");
-		String email = body.get("email");
 
 		if(firstName == null || lastName == null || profileDescription == null ||
-				userName == null || password == null || email == null) {
+				userName == null) {
 
 			throw new MissingParametersForEditUserException();
 		}
@@ -188,8 +186,6 @@ public class UserController {
 		existingUser.setLastName(lastName);
 		existingUser.setProfileDescription(profileDescription);
 		existingUser.setUserName(userName);
-		existingUser.setPassword(password);
-		existingUser.setEmail(email);
 
 		try {
 			userRepository.save(existingUser);
@@ -198,7 +194,7 @@ public class UserController {
 			throw new UserNotEditedException();
 		}
 
-		return new ResponseEntity<>("User edited", HttpStatus.OK);
+		return new ResponseEntity<>("User edited", HttpStatus.ACCEPTED);
 	}
 
 
