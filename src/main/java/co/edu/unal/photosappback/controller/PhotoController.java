@@ -50,7 +50,7 @@ public class PhotoController {
 	}
 
 
-	@PostMapping("/upload/")
+	@PostMapping("/upload")
 	public ResponseEntity<?> uploadPhoto(
 			@RequestPart(value = "file", required = true) MultipartFile file, 
 			@RequestPart(value = "photo_name", required = true) String photoName,
