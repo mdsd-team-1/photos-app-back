@@ -9,6 +9,7 @@
 * GET  /user/**{id}**/photos
 
 * POST /user/create
+> Request Body:
 ```json
 {
   "first_name": "Peter",
@@ -21,6 +22,7 @@
 ```
 
 * PUT /user/**{id}**/edit
+> Request Body:
 ```json
 {
   "first_name": "Peter",
@@ -37,10 +39,11 @@
 * GET  /album/**{id}**/photos
 
 * POST /album/create
+> Request Body:
 ```json
 {
   "name": "Vacations",
-  "user_id": 1
+  "user_id": 2
 }
 ```
 
@@ -48,9 +51,12 @@
 ### Photo
 
 * GET  /photo/id/**{id}**
-* POST /photo/upload/?photoName=**{photoName}**&albumId=**{albumId}**
-```
+* POST /photo/upload/
+> Request Body:
+```json
 {
-  "file": "photo.png" <- File selected by user
+  "file": "photo.png", <- File selected by user
+  "photo_name": "My Cat",
+  "album_id": 2
 }
 ```
