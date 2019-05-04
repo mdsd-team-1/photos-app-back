@@ -2,6 +2,21 @@
 * Production URL: http://ec2-18-219-130-204.us-east-2.compute.amazonaws.com:8080/
 
 ---
+### Access Token
+
+> Authorization:
+
+Type: Basic Auth
+      Username:xxxx
+      Password:xxxx
+
+> Body:x-www-from-urlencoded
+
+password:xxxxx
+username:xxxxx
+grant_type:password
+
+---
 ### User
 
 * GET  /user/id/**{id}**?access_token={{$access_token}}
