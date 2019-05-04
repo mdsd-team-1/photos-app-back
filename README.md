@@ -7,14 +7,14 @@
 > Authorization:
 
 Type: Basic Auth
-      >Username:xxxx
-      >Password:xxxx
+      Username:xxxx
+      Password:xxxx
 
 > Body:  x-www-from-urlencoded
 
->password:xxxxx
->username:xxxxx
->grant_type:password
+password:xxxxx
+username:xxxxx
+grant_type:password
 
 ---
 ### User
