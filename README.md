@@ -4,6 +4,8 @@
 ---
 ### Access Token
 
+* POST /oauth/token
+
 > Authorization:
 
 Type: Basic Auth
