@@ -4,6 +4,11 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
+@NamedNativeQuery(
+		name="findLoginUser",
+		query = "SELECT id FROM users WHERE email = ?0 AND password = ?1",
+		resultClass = User.class
+)
 public class User {
 
 	private int id;

@@ -1,16 +1,7 @@
 package co.edu.unal.photosappback.controller;
 
 import co.edu.unal.photosappback.controller.exception.album.UserIdIsNotNumberException;
-import co.edu.unal.photosappback.controller.exception.user.AlbumNotCreatedForNewUserException;
-import co.edu.unal.photosappback.controller.exception.user.AlbumsFromUserNotFoundException;
-import co.edu.unal.photosappback.controller.exception.user.MissingParametersForEditUserException;
-import co.edu.unal.photosappback.controller.exception.user.MissingParametersForNewUserException;
-import co.edu.unal.photosappback.controller.exception.user.UserHasNoAlbumsException;
-import co.edu.unal.photosappback.controller.exception.user.UserHasNoPhotosException;
-import co.edu.unal.photosappback.controller.exception.user.UserNotCreatedException;
-import co.edu.unal.photosappback.controller.exception.user.UserNotEditedException;
-import co.edu.unal.photosappback.controller.exception.user.UserNotFoundException;
-import co.edu.unal.photosappback.controller.exception.user.UserToEditDoesNotExist;
+import co.edu.unal.photosappback.controller.exception.user.*;
 import co.edu.unal.photosappback.model.Album;
 import co.edu.unal.photosappback.model.Photo;
 import co.edu.unal.photosappback.model.User;
@@ -25,10 +16,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -120,6 +111,35 @@ public class UserController {
 		return new ResponseEntity<>(allPhotos, HttpStatus.OK);
 	}
 
+	@PostMapping("/login")
+	public ResponseEntity<?> loginUser(@RequestBody Map<String, String> body) throws Exception {
+
+		User existingUser = null;
+
+		String email = body.get("email");
+		String password = body.get("password");
+
+		if(password == null || email == null) {
+			throw new MissingParametersForLoginException();
+		}
+
+		try {
+			existingUser = userRepository.findByEmailAndPassword(email,password);
+
+		} catch(Exception e) {
+			throw new WrongLoginInfoException();
+		}
+
+		if(existingUser == null){
+			throw new WrongLoginInfoException();
+		}
+
+		Map<String,Object> response = new HashMap<String,Object>();
+		response.put("Login Status: ","Successfully logged in");
+		response.put("User Id",existingUser.getId());
+
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
+	}
 
 	@PostMapping("/create")
 	public ResponseEntity<?> createUser(@RequestBody Map<String, String> body) throws Exception {
@@ -216,7 +236,7 @@ public class UserController {
 			return new ResponseEntity<>("User has no photos", HttpStatus.NOT_FOUND);
 
 		} else if(exception instanceof MissingParametersForNewUserException) {
-			return new ResponseEntity<>("Missing parameters for new user", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Missing parameters for new user", HttpStatus.PARTIAL_CONTENT);
 
 		} else if(exception instanceof UserNotCreatedException) {
 			return new ResponseEntity<>("User not created", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -225,7 +245,13 @@ public class UserController {
 			return new ResponseEntity<>("Album not created for new user", HttpStatus.INTERNAL_SERVER_ERROR);
 
 		} else if(exception instanceof MissingParametersForEditUserException) {
-			return new ResponseEntity<>("Missing parameters for edit user", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>("Missing parameters for edit user", HttpStatus.PARTIAL_CONTENT);
+
+		} else if(exception instanceof WrongLoginInfoException) {
+			return new ResponseEntity<>("Email or password incorrect", HttpStatus.PARTIAL_CONTENT);
+
+		} else if(exception instanceof MissingParametersForLoginException) {
+			return new ResponseEntity<>("Missing parameters for login", HttpStatus.PARTIAL_CONTENT);
 
 		} else if(exception instanceof UserIdIsNotNumberException) {
 			return new ResponseEntity<>("UserId is not number", HttpStatus.BAD_REQUEST);

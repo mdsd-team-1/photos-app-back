@@ -26,10 +26,11 @@ import javax.annotation.Resource;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
- @Bean
     @Override
+    @Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
@@ -37,14 +38,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
-        UserDetails webClient=User.builder().username("web_client").password(passwordEncoder().encode("secret")).
+        UserDetails webClient=User.withUsername("web_client").password(passwordEncoder().encode("secret")).
                 roles("WEB_CLIENT").build();
         return new InMemoryUserDetailsManager(webClient);
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new  BCryptPasswordEncoder();
     }
-
-
 }

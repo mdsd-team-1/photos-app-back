@@ -13,13 +13,15 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
 	static final String CLIEN_ID = "modelos-client";
-	static final String CLIENT_SECRET = "modelos-secret";
+	static final String CLIENT_SECRET ="$2a$04$4lqJ9mE/Chp5x9X.seBjlOYI0kQ.bIf.ENaIaM9vj/xAPV8PYvc9K";
 	static final String GRANT_TYPE_PASSWORD = "password";
 	static final String AUTHORIZATION_CODE = "authorization_code";
     static final String REFRESH_TOKEN = "refresh_token";
@@ -31,11 +33,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     static final int FREFRESH_TOKEN_VALIDITY_SECONDS = 6*60*60;
 
 	@Autowired
-	@Qualifier("authenticationManagerBean")
 	private AuthenticationManager authenticationManager;
 
-	@Autowired
-	private TokenStore tokenStore;
+	@Bean
+	public JwtAccessTokenConverter accessTokenConverter() {
+		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+		converter.setSigningKey("as466gf");
+		return converter;
+	}
+
+	@Bean
+	public TokenStore tokenStore() {
+		return new JwtTokenStore(accessTokenConverter());
+	}
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
@@ -43,7 +53,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		configurer
 				.inMemory()
 				.withClient(CLIEN_ID)
-				.secret(passwordEncoder().encode(CLIENT_SECRET))
+				.secret(CLIENT_SECRET)
 				.authorizedGrantTypes(GRANT_TYPE_PASSWORD, AUTHORIZATION_CODE, REFRESH_TOKEN, IMPLICIT )
 				.scopes(SCOPE_READ, SCOPE_WRITE, TRUST)
 				.autoApprove(true)
@@ -51,22 +61,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 				.refreshTokenValiditySeconds(FREFRESH_TOKEN_VALIDITY_SECONDS);
 	}
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-
 	@Override
-	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints
+	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+		endpoints.tokenStore(tokenStore())
 				.authenticationManager(authenticationManager)
-				.tokenStore(tokenStore);
+				.accessTokenConverter(accessTokenConverter());
 	}
-
-	@Bean
-	public TokenStore tokenStore() {
-		return new InMemoryTokenStore();
-	}
-
-
 }

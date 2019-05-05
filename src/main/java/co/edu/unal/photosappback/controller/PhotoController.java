@@ -15,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@CrossOrigin
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController
 @RequestMapping("/photo")
 public class PhotoController {
@@ -108,7 +110,7 @@ public class PhotoController {
 	}
 
 
-	@PostMapping("/photo/delete")
+	@DeleteMapping("/delete")
 	public ResponseEntity<?> deleteFile(@RequestPart(value = "url") String fileUrl) throws Exception {
 
 		try {
@@ -119,6 +121,20 @@ public class PhotoController {
 		}
 
 		return new ResponseEntity<>("Photo deleted", HttpStatus.OK);
+	}
+
+
+	@GetMapping("/all")
+	public ResponseEntity<?> findAll() throws Exception {
+		List photo = new ArrayList();
+
+		try {
+			photo = photoRepository.findAll();
+
+		} catch(Exception e) {
+			throw new PhotoNotFoundException();
+		}
+		return new ResponseEntity<>(photo, HttpStatus.OK);
 	}
 
 
