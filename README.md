@@ -43,8 +43,8 @@ Authorization:Bearer **{access_token}**
 > Request Body:
 ```json
 {
-    "password": "1234564",
-    "email": "dabarreiroh@gmail.com"
+    "email": "dabarreiroh@gmail.com",
+    "password": "1234564"
 }
 ```
 
