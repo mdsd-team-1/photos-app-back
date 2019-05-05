@@ -22,11 +22,38 @@ grant_type:password
 ---
 ### User
 
-* GET  /user/id/**{id}**?access_token={{$access_token}}
-* GET  /user/**{id}**/albums?access_token={{$access_token}}
-* GET  /user/**{id}**/photos?access_token={{$access_token}}
+* GET  /user/id/**{id}**
 
-* POST /user/create?access_token={{$access_token}}
+> Header: Authorization:Bearer **{access_token}**
+
+* GET  /user/**{id}**/albums
+
+> Header: Authorization:Bearer **{access_token}**
+
+* GET  /user/**{id}**/photos
+
+> Header: Authorization:Bearer **{access_token}**
+
+* POST /user/login
+
+> Header: 
+Content-Type:application/json
+Authorization:Bearer **{access_token}**
+
+> Request Body:
+```json
+{
+    "password": "1234564",
+    "email": "dabarreiroh@gmail.com"
+}
+```
+
+* POST /user/create
+
+> Header: 
+Content-Type:application/json
+Authorization:Bearer **{access_token}**
+
 > Request Body:
 ```json
 {
@@ -39,7 +66,12 @@ grant_type:password
 }
 ```
 
-* PUT /user/**{id}**/edit?access_token={{$access_token}}
+* PUT /user/**{id}**/edit
+
+> Header: 
+Content-Type:application/json
+Authorization:Bearer **{access_token}**
+
 > Request Body:
 ```json
 {
@@ -53,10 +85,20 @@ grant_type:password
 ---
 ### Album
 
-* GET  /album/id/**{id}**?access_token={{$access_token}}
-* GET  /album/**{id}**/photos?access_token={{$access_token}}
+* GET  /album/id/**{id}**
 
-* POST /album/create?access_token={{$access_token}}
+> Header: Authorization:Bearer **{access_token}**
+
+* GET  /album/**{id}**/photos
+
+> Header: Authorization:Bearer **{access_token}**
+
+* POST /album/create
+
+> Header: 
+Content-Type:application/json
+Authorization:Bearer **{access_token}**
+
 > Request Body:
 ```json
 {
@@ -68,8 +110,20 @@ grant_type:password
 ---
 ### Photo
 
-* GET  /photo/id/**{id}**?access_token={{$access_token}}
-* POST /photo/upload/?access_token={{$access_token}}
+* GET  /photo/id/**{id}**
+
+> Header: Authorization:Bearer **{access_token}**
+
+* GET  /photo/all
+
+> Header: Authorization:Bearer **{access_token}**
+
+* POST /photo/upload
+
+> Header: 
+Content-Type:application/x-www-form-data
+Authorization:Bearer **{access_token}**
+
 > Request Body:
 ```
 {
