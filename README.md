@@ -7,17 +7,11 @@
 
 * POST /oauth/token
 
-> Authorization:
-
-Type: Basic Auth
-      Username:xxxx
-      Password:xxxx
-
-> Body:  x-www-from-urlencoded
-
-password:xxxxx
-username:xxxxx
-grant_type:password
+> Header - 'Authorization': 'Basic ' + btoa('xxxx-client:xxxx-secret')
+> Body - {'username' :'xxxx',
+      'password' :'xxxx',
+	'grant_type':  'password' }
+> Content-type: application/x-www-form-urlencoded
 
 ---
 ### User
