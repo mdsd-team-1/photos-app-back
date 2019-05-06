@@ -1,4 +1,4 @@
-<h1> Photos API
+# Photos API
       
 **Production URL:** http://ec2-18-219-130-204.us-east-2.compute.amazonaws.com:8080/
 
@@ -7,26 +7,47 @@
 
 * POST /oauth/token
 
-> Authorization:
-
-Type: Basic Auth
-      Username:xxxx
-      Password:xxxx
-
-> Body:  x-www-from-urlencoded
-
-password:xxxxx
-username:xxxxx
-grant_type:password
+> Header - 'Authorization': 'Basic ' + btoa('xxxx-client:xxxx-secret')
+> Body - {'username' :'xxxx',
+      'password' :'xxxx',
+	'grant_type':  'password' }
+> Content-type: application/x-www-form-urlencoded
 
 ---
 ### User
 
-* GET  /user/id/**{id}**?access_token={{$access_token}}
-* GET  /user/**{id}**/albums?access_token={{$access_token}}
-* GET  /user/**{id}**/photos?access_token={{$access_token}}
+* GET  /user/id/**{id}**
 
-* POST /user/create?access_token={{$access_token}}
+> Header: Authorization:Bearer **{access_token}**
+
+* GET  /user/**{id}**/albums
+
+> Header: Authorization:Bearer **{access_token}**
+
+* GET  /user/**{id}**/photos
+
+> Header: Authorization:Bearer **{access_token}**
+
+* POST /user/login
+
+> Header: 
+Content-Type:application/json
+Authorization:Bearer **{access_token}**
+
+> Request Body:
+```json
+{
+    "email": "dabarreiroh@gmail.com",
+    "password": "1234564"
+}
+```
+
+* POST /user/create
+
+> Header: 
+Content-Type:application/json
+Authorization:Bearer **{access_token}**
+
 > Request Body:
 ```json
 {
@@ -39,7 +60,12 @@ grant_type:password
 }
 ```
 
-* PUT /user/**{id}**/edit?access_token={{$access_token}}
+* PUT /user/**{id}**/edit
+
+> Header: 
+Content-Type:application/json
+Authorization:Bearer **{access_token}**
+
 > Request Body:
 ```json
 {
@@ -53,10 +79,20 @@ grant_type:password
 ---
 ### Album
 
-* GET  /album/id/**{id}**?access_token={{$access_token}}
-* GET  /album/**{id}**/photos?access_token={{$access_token}}
+* GET  /album/id/**{id}**
 
-* POST /album/create?access_token={{$access_token}}
+> Header: Authorization:Bearer **{access_token}**
+
+* GET  /album/**{id}**/photos
+
+> Header: Authorization:Bearer **{access_token}**
+
+* POST /album/create
+
+> Header: 
+Content-Type:application/json
+Authorization:Bearer **{access_token}**
+
 > Request Body:
 ```json
 {
@@ -68,8 +104,20 @@ grant_type:password
 ---
 ### Photo
 
-* GET  /photo/id/**{id}**?access_token={{$access_token}}
-* POST /photo/upload/?access_token={{$access_token}}
+* GET  /photo/id/**{id}**
+
+> Header: Authorization:Bearer **{access_token}**
+
+* GET  /photo/all
+
+> Header: Authorization:Bearer **{access_token}**
+
+* POST /photo/upload
+
+> Header: 
+Content-Type:application/x-www-form-data
+Authorization:Bearer **{access_token}**
+
 > Request Body:
 ```
 {
