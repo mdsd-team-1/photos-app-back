@@ -135,7 +135,7 @@ public class UserController {
 		}
 
 		Map<String,Object> response = new HashMap<String,Object>();
-		response.put("Login Status: ","Successfully logged in");
+		response.put("Login Status","Successfully logged in");
 		response.put("User Id",existingUser.getId());
 
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
